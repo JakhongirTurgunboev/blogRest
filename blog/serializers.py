@@ -4,6 +4,7 @@ from .models import Blog, Comment, Like, CustomUser
 
 
 class BlogSerializer(serializers.ModelSerializer):
+    image = serializers.ImageField(required=True)
     class Meta:
         model = Blog
         fields = '__all__'
@@ -26,6 +27,13 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ['username', 'email', 'first_name', 'last_name']
+        fields = ['username', 'password', 'email', 'first_name', 'last_name']
+
+    def create(self, validated_data):
+        user = CustomUser.objects.create(**validated_data)
+        user.set_password(validated_data['password'])
+        user.save()
+
+        return user
 
 

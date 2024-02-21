@@ -4,6 +4,10 @@ from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
 
+def upload_to(instance, filename):
+    return f'images/{filename}'
+
+
 class CustomUser(AbstractUser):
     def __str__(self):
         return self.username
@@ -13,7 +17,7 @@ class Blog(models.Model):
     title = models.CharField(max_length=100)
     text = models.TextField()
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='images/')
+    image = models.ImageField(upload_to=upload_to)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     summary = models.CharField(max_length=250)
