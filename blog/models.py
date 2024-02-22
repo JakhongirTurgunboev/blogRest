@@ -1,7 +1,11 @@
+import time
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 def upload_to(instance, filename):
@@ -24,6 +28,14 @@ class Blog(models.Model):
 
     def __str__(self):
         return self.title
+
+
+@receiver(post_save, sender=Blog)
+def update_blog(sender, instance, **kwargs):
+    word1 = "salom"
+    time.sleep(2)
+    if word1 in instance.title or instance.text:
+        instance.delete()
 
 
 class Comment(models.Model):

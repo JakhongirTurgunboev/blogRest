@@ -8,3 +8,8 @@ services:
       - ./:/usr/src/app/
     ports:
       - 8000:8000
+  redis:
+    restart: unless-stopped
+    image: redis:7.0.5-alpine
+    expose:
+      - 6379
